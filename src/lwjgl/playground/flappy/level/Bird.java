@@ -22,9 +22,12 @@ public class Bird {
     private float rotation;
     private float delta;
 
+    private boolean isDead;
+
     public Bird() {
         position = new Vector3f();
         delta = 0.0f;
+        isDead = false;
 
         float[] vertices = new float[] {
                 -SIZE / 2.0f,   -SIZE / 2.0f, 0.2f,
@@ -55,10 +58,15 @@ public class Bird {
 
     public void update() {
         position.y -= delta;
-        if (InputListener.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
+        if (InputListener.isKeyDown(GLFW.GLFW_KEY_SPACE) && !isDead) {
             delta = -0.15f;
         } else {
             delta += 0.01f;
+        }
+
+        if (position.y < -20.0f) {
+            delta = 0.0f;
+            position.y = -20.0f;
         }
 
         rotation = -delta * 90.0f;
@@ -70,6 +78,10 @@ public class Bird {
         texture.bind();
         mesh.render();
         Shader.BIRD.disable();
+    }
+
+    public void die() {
+        isDead = true;
     }
 
     public float getY() {

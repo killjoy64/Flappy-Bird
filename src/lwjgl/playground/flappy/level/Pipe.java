@@ -15,17 +15,15 @@ public class Pipe {
     private static Texture texture;
     private static VertexArray mesh;
 
-    private static Vector3f position;
+    private Vector3f position = new Vector3f();
     private Matrix4f ml_matrix;
 
     public static void create() {
-        position = new Vector3f();
-
         float[] vertices = new float[] {
                 0.0f, 0.0f, 0.1f,
                 0.0f, height, 0.1f,
                 width, height, 0.1f,
-                width, 0.0f, 0.1f,
+                width, 0.0f, 0.1f
         };
 
         byte[] indices = new byte[] {

@@ -100,10 +100,6 @@ public class Main {
         if (threadedRenderer.isReady()) {
             threadedRenderer.getLevel().update();
         }
-
-        if (InputListener.keys[GLFW_KEY_SPACE]) {
-
-        }
     }
 
     private void close() {

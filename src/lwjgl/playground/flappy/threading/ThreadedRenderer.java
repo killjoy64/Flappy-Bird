@@ -3,6 +3,7 @@ package lwjgl.playground.flappy.threading;
 import lwjgl.playground.flappy.graphics.Shader;
 import lwjgl.playground.flappy.level.Level;
 import lwjgl.playground.flappy.math.Matrix4f;
+import org.lwjgl.opengles.GLES;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL.createCapabilities;
@@ -36,9 +37,10 @@ public class ThreadedRenderer {
             public void run() {
                 glfwMakeContextCurrent(window);
                 createCapabilities();
-                glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
                 glEnable(GL_DEPTH_TEST);
                 glActiveTexture(GL_TEXTURE1);
+                glEnable(GL_BLEND);
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
                 System.out.println("Render thread initialized - OpenGL " + glGetString(GL_VERSION));
                 Shader.loadAll(); // Must be called befor enable...
@@ -73,7 +75,13 @@ public class ThreadedRenderer {
 
     private void render() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        level.render();
+
+        if (level.gameover()) {
+            level = new Level();
+        } else {
+            level.render();
+        }
+
         glfwSwapBuffers(window);
 
         fps++;

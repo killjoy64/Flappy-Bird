@@ -1,12 +1,18 @@
 package lwjgl.playground.flappy.level;
 
+import jdk.internal.util.xml.impl.Input;
 import lwjgl.playground.flappy.graphics.Shader;
 import lwjgl.playground.flappy.graphics.Texture;
 import lwjgl.playground.flappy.graphics.VertexArray;
+import lwjgl.playground.flappy.input.InputListener;
 import lwjgl.playground.flappy.math.Matrix4f;
 import lwjgl.playground.flappy.math.Vector3f;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.Random;
+
+import static org.lwjgl.opengl.GL.create;
+import static org.lwjgl.opengl.GL.createCapabilities;
 
 /**
  * Created by Kyle Flynn on 8/31/2016.
@@ -17,6 +23,7 @@ public class Level {
     private Bird bird;
 
     private VertexArray background;
+    private VertexArray fade;
     private Texture bgTexture;
 
     private Random random;
@@ -28,13 +35,20 @@ public class Level {
     private float offset;
 
     private boolean isDead;
+    private boolean gameover;
+
+    private float time = 0.0f;
 
     public Level() {
+        createLevel();
+    }
+
+    public void createLevel() {
         float[] vertices = new float[] {
                 -10.0f, -10.0f * 9.0f / 16.0f, 0.0f,
                 -10.0f,  10.0f * 9.0f / 16.0f, 0.0f,
-                  0.0f,  10.0f * 9.0f / 16.0f, 0.0f,
-                  0.0f, -10.0f * 9.0f / 16.0f, 0.0f
+                0.0f,  10.0f * 9.0f / 16.0f, 0.0f,
+                0.0f, -10.0f * 9.0f / 16.0f, 0.0f
         };
 
         byte[] indices = new byte[] {
@@ -51,7 +65,9 @@ public class Level {
 
         offset = 5.0f;
         isDead = false;
+        gameover = false;
 
+        fade = new VertexArray(6);
         background = new VertexArray(vertices, indices, tcs);
         bgTexture = new Texture("res/bg.jpeg");
 
@@ -77,16 +93,23 @@ public class Level {
 
         bird.update();
 
-        if (!isDead && collision()) {
+        if ((!isDead && collision()) || bird.getY() < -12.0f) {
             isDead = true;
-            System.out.println("COLLISION");
+            bird.die();
         }
+
+        if (isDead && InputListener.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
+            gameover = true;
+        }
+
+        time += 0.01f;
 
     }
 
     public void render() {
         bgTexture.bind();
         Shader.BG.enable();
+        Shader.BG.setUniform2f("bird", 0, bird.getY());
         background.bind();
         for (int i = bgMaps; i < bgMaps + 4; i++) {
             Shader.BG.setUniformMatrix4f("vw_matrix", Matrix4f.translate(new Vector3f(i * 10 + xScroll * 0.03f, 0.0f, 0.0f)));
@@ -97,13 +120,18 @@ public class Level {
 
         renderPipes();
         bird.render();
+
+        Shader.FADE.enable();
+        Shader.FADE.setUniform1f("time", time);
+        fade.render();
+        Shader.FADE.disable();
     }
 
     private void createPipes() {
         Pipe.create();
         for (int i = 0; i < 5 * 2; i+=2) {
             pipes[i] = new Pipe(offset + index * 3.0f, random.nextFloat() * 4.0f);
-            pipes[i + 1] = new Pipe(pipes[i].getX(), pipes[i].getY() - 12.0f);
+            pipes[i + 1] = new Pipe(pipes[i].getX(), pipes[i].getY() - 11.5f);
             index += 2;
         }
     }
@@ -117,6 +145,7 @@ public class Level {
     private void renderPipes() {
         Shader.PIPE.enable();
         Shader.PIPE.setUniformMatrix4f("vw_matrix", Matrix4f.translate(new Vector3f(xScroll * 0.05f, 0.0f, 0.0f)));
+        Shader.PIPE.setUniform2f("bird", 0, bird.getY());
         Pipe.getTexture().bind();
         Pipe.getMesh().bind();
 
@@ -128,14 +157,12 @@ public class Level {
         }
         Pipe.getTexture().unbind();
         Pipe.getMesh().unbind();
-        Shader.PIPE.disable();
     }
 
     private boolean collision() {
         for (int i = 0; i < 5 * 2; i++) {
             float bx = -xScroll * 0.05f;
             float by = bird.getY();
-
             float px = pipes[i].getX();
             float py = pipes[i].getY();
 
@@ -156,6 +183,14 @@ public class Level {
             }
         }
         return false;
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public boolean gameover() {
+        return gameover;
     }
 
 }
