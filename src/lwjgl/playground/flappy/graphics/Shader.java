@@ -15,6 +15,8 @@ import static org.lwjgl.opengl.GL20.*;
 public class Shader {
 
     public static Shader BG;
+    public static Shader BIRD;
+    public static Shader PIPE;
 
     public static final int VERTEX_ATTRIBUTE = 0;
     public static final int TEX_COORD = 1;
@@ -72,6 +74,8 @@ public class Shader {
 
     public static void loadAll() {
         BG = new Shader("shaders/bg.vert", "shaders/bg.frag");
+        BIRD = new Shader("shaders/bird.vert", "shaders/bird.frag");
+        PIPE = new Shader("shaders/pipe.vert", "shaders/pipe.frag");
     }
 
 }

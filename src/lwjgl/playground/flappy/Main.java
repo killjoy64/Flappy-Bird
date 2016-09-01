@@ -18,11 +18,13 @@ public class Main {
 
     static double NANOSECONDS = 1000000000.0 / 60.0;
 
-    private int width = 720;
-    private int height = 480;
+    private int width = 1280;
+    private int height = 720;
     private int upsCount;
 
     private long window;
+
+    ThreadedRenderer threadedRenderer;
 
     public Main() {
         upsCount = 0;
@@ -38,7 +40,7 @@ public class Main {
         try {
             init();
 
-            ThreadedRenderer threadedRenderer = new ThreadedRenderer(window);
+            threadedRenderer = new ThreadedRenderer(window);
 
             threadedRenderer.init();
 
@@ -94,6 +96,10 @@ public class Main {
 
     private void update() {
         glfwPollEvents();
+
+        if (threadedRenderer.isReady()) {
+            threadedRenderer.getLevel().update();
+        }
 
         if (InputListener.keys[GLFW_KEY_SPACE]) {
 

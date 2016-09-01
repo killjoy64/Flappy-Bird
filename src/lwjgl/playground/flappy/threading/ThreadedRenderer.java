@@ -22,8 +22,11 @@ public class ThreadedRenderer {
 
     private Level level;
 
+    private boolean ready;
+
     public ThreadedRenderer(long window) {
         this.window = window;
+        this.ready = false;
     }
 
     public void init() {
@@ -46,8 +49,19 @@ public class ThreadedRenderer {
                 Shader.BG.setUniformi("tex", 1);
                 Shader.BG.disable();
 
+                Shader.BIRD.enable();
+                Shader.BIRD.setUniformMatrix4f("pr_matrix", pr_matrix);
+                Shader.BIRD.setUniformi("tex", 1);
+                Shader.BIRD.disable();
+
+                Shader.PIPE.enable();
+                Shader.PIPE.setUniformMatrix4f("pr_matrix", pr_matrix);
+                Shader.PIPE.setUniformi("tex", 1);
+                Shader.PIPE.disable();
+
                 level = new Level();
 
+                ready = true;
                 while (!glfwWindowShouldClose(window)) {
                     render();
                 }
@@ -70,4 +84,13 @@ public class ThreadedRenderer {
         fps = 0;
         return oldFPS;
     }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public boolean isReady() {
+        return ready;
+    }
+
 }
