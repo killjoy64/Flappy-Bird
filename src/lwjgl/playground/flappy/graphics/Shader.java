@@ -18,6 +18,7 @@ public class Shader {
     public static Shader BIRD;
     public static Shader PIPE;
     public static Shader FADE;
+    public static Shader PHYSICS;
 
     public static final int VERTEX_ATTRIBUTE = 0;
     public static final int TEX_COORD = 1;

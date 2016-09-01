@@ -5,6 +5,8 @@ import lwjgl.playground.flappy.input.InputListener;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
+import org.lwjgl.openal.AL;
+import org.lwjgl.openal.ALC;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
