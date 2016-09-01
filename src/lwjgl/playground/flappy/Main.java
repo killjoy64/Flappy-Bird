@@ -1,13 +1,20 @@
 package lwjgl.playground.flappy;
 
+import lwjgl.playground.flappy.audio.Music;
 import lwjgl.playground.flappy.threading.ThreadedRenderer;
 import lwjgl.playground.flappy.input.InputListener;
+import lwjgl.playground.flappy.util.BufferUtils;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
+import org.lwjgl.openal.*;
+
+import java.nio.ByteBuffer;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.openal.AL10.*;
+import static org.lwjgl.openal.ALC10.*;
 import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.*;
@@ -19,14 +26,15 @@ public class Main {
 
     static double NANOSECONDS = 1000000000.0 / 60.0;
 
-    private int width = 1280;
-    private int height = 720;
+    private int width = 720;
+    private int height = 480;
     private int upsCount;
     private boolean resized = false;
 
     private long window;
 
     ThreadedRenderer threadedRenderer;
+    Thread musicThread;
 
     public Main() {
         upsCount = 0;
@@ -43,6 +51,8 @@ public class Main {
             init();
 
             threadedRenderer = new ThreadedRenderer(window);
+            musicThread = new Thread(new Music(), "Music Thread");
+            musicThread.start();
 
             threadedRenderer.init();
 
@@ -88,6 +98,12 @@ public class Main {
         if (window == NULL) {
             throw new RuntimeException("Failed to create the GLFW window");
         }
+
+        // BEGIN AUDIO CODE
+
+        Thread soundThread = new Thread(new Music(), "Music Thread");
+        soundThread.start();
+        // END AUDIO CODE
 
         GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwSetWindowPos(window, (vidMode.width() - width) / 2, (vidMode.height() - height) / 2);
