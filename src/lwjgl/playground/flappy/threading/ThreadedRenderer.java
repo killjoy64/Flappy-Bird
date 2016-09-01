@@ -88,7 +88,10 @@ public class ThreadedRenderer {
 
     public void resize(int width, int height)
     {
-        rendererEventQueue.offer(new ResizeEvent(width, height));
+        if (rendererEventQueue.size() < 8)
+        {
+            rendererEventQueue.offer(new ResizeEvent(width, height));
+        }
     }
 
     private void render() {
