@@ -34,6 +34,7 @@ public class Level {
     private int index = 0;
     private float offset;
 
+    private boolean readyToStart;
     private boolean isDead;
     private boolean gameover;
 
@@ -63,9 +64,10 @@ public class Level {
                 1, 1
         };
 
-        offset = 5.0f;
+        offset = 10.0f;
         isDead = false;
         gameover = false;
+        readyToStart = false;
 
         fade = new VertexArray(6);
         background = new VertexArray(vertices, indices, tcs);
@@ -79,19 +81,21 @@ public class Level {
     }
 
     public void update() {
-        if (!isDead) {
+        if (!isDead && readyToStart) {
             xScroll--;
 
-            if (-xScroll % 335 == 0) {
+            if (-xScroll % 375 == 0) {
                 bgMaps++;
             }
 
-            if (-xScroll > 250 && -xScroll % 120 == 0) {
+            if (-xScroll > 265 && -xScroll % 210 == 0) {
                 updatePipes();
             }
         }
 
-        bird.update();
+        if (readyToStart) {
+            bird.update();
+        }
 
         if ((!isDead && collision()) || bird.getY() < -12.0f) {
             isDead = true;
@@ -100,6 +104,10 @@ public class Level {
 
         if (isDead && InputListener.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
             gameover = true;
+        }
+
+        if (!readyToStart && InputListener.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
+            readyToStart = true;
         }
 
         time += 0.01f;
