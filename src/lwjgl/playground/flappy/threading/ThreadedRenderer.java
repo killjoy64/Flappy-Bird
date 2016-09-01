@@ -29,7 +29,7 @@ public class ThreadedRenderer {
 
     private boolean ready;
 
-    final Queue<ResizeEvent> rendererEventQueue = new ConcurrentLinkedQueue<ResizeEvent>();
+    final Queue<ResizeEvent> rendererEventQueue = new ConcurrentLinkedQueue<>();
 
     public ThreadedRenderer(long window) {
         this.window = window;

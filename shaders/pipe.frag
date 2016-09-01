@@ -14,10 +14,12 @@ uniform int top;
 
 void main()
 {
-    if (top == 1)
-        fs_in.tc.y = 1.0 - fs_in.tc.y;
+    vec2 new_tc = fs_in.tc;
 
-    color = texture(tex, fs_in.tc);
+    if (top == 1)
+        new_tc.y = 1.0 - fs_in.tc.y;
+
+    color = texture(tex, new_tc);
     if (color.w < 1.0)
             discard;
 
