@@ -16,7 +16,14 @@ public class ShaderUtils {
         String vert = FileUtils.loadAsString(verPath);
         String frag = FileUtils.loadAsString(fragPath);
 
-        return create(vert, frag);
+        int result = create(vert, frag);
+
+        if (result == -1)
+        {
+            System.err.println("Failed to compile Shader: " + verPath + ", " + fragPath);
+        }
+
+        return result;
     }
 
     public static int create(String vert, String frag) {
@@ -28,15 +35,16 @@ public class ShaderUtils {
 
         glCompileShader(vertID);
         if (glGetShaderi(vertID, GL_COMPILE_STATUS) == GL_FALSE) {
-            System.err.println("FAILED TO COMPILE VERTEX SHADER");
+            System.err.println("Failed to compile Vertex Shader: ");
             System.err.println(glGetShaderInfoLog(vertID));
             return -1;
         }
 
         glCompileShader(fragID);
         if (glGetShaderi(fragID, GL_COMPILE_STATUS) == GL_FALSE) {
-            System.err.println("FAILED TO COMPILE FRAGMENT SHADER");
+            System.err.println("Failed to compile Fragment Shader: ");
             System.err.println(glGetShaderInfoLog(fragID));
+            return -1;
         }
 
         glAttachShader(program, vertID);

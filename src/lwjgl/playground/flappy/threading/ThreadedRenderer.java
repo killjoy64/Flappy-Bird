@@ -3,6 +3,7 @@ package lwjgl.playground.flappy.threading;
 import lwjgl.playground.flappy.graphics.Shader;
 import lwjgl.playground.flappy.level.Level;
 import lwjgl.playground.flappy.math.Matrix4f;
+import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengles.GLES;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -11,6 +12,9 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Created by Kyle Flynn on 8/31/2016.
@@ -24,6 +28,8 @@ public class ThreadedRenderer {
     private Level level;
 
     private boolean ready;
+
+    final Queue<ResizeEvent> rendererEventQueue = new ConcurrentLinkedQueue<ResizeEvent>();
 
     public ThreadedRenderer(long window) {
         this.window = window;
@@ -43,7 +49,7 @@ public class ThreadedRenderer {
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
                 System.out.println("Render thread initialized - OpenGL " + glGetString(GL_VERSION));
-                Shader.loadAll(); // Must be called befor enable...
+                Shader.loadAll(); // Must be called before enable...
 
                 Shader.BG.enable();
                 Matrix4f pr_matrix = Matrix4f.orthographic(-10.0f, 10.0f, -10.0f * 9.0f / 16.0f, 10.0f * 9.0f / 16.0f, -1.0f, 1.0f);
@@ -66,11 +72,23 @@ public class ThreadedRenderer {
                 ready = true;
                 while (!glfwWindowShouldClose(window)) {
                     render();
+
+                    ResizeEvent resizeEvent = rendererEventQueue.poll();
+
+                    if (resizeEvent != null)
+                    {
+                        glViewport(0, 0, resizeEvent.getWidth(), resizeEvent.getHeight());
+                    }
                 }
             }
 
         }, "Render Thread");
         thread.start();
+    }
+
+    public void resize(int width, int height)
+    {
+        rendererEventQueue.offer(new ResizeEvent(width, height));
     }
 
     private void render() {

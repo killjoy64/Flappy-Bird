@@ -2,16 +2,21 @@
   <library name="LWJGL 3">
     <CLASSES>
       <root url="file://$PROJECT_DIR$/../../Coding Libraries/LWJGL (3.0.0.90)/jar" />
+      <root url="file://$USER_HOME$/Downloads/lwjgl stable/jar" />
     </CLASSES>
     <JAVADOC>
       <root url="file://$PROJECT_DIR$/../../Coding Libraries/LWJGL (3.0.0.90)/doc" />
+      <root url="file://$USER_HOME$/Downloads/lwjgl stable/doc" />
     </JAVADOC>
     <NATIVE>
       <root url="file://$PROJECT_DIR$/../../Coding Libraries/LWJGL (3.0.0.90)/native" />
+      <root url="file://$USER_HOME$/Downloads/lwjgl stable/native" />
     </NATIVE>
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/../../Coding Libraries/LWJGL (3.0.0.90)/src.zip!/" />
+      <root url="jar://$USER_HOME$/Downloads/lwjgl stable/src.zip!/" />
     </SOURCES>
     <jarDirectory url="file://$PROJECT_DIR$/../../Coding Libraries/LWJGL (3.0.0.90)/jar" recursive="false" />
+    <jarDirectory url="file://$USER_HOME$/Downloads/lwjgl stable/jar" recursive="false" />
   </library>
 </component>

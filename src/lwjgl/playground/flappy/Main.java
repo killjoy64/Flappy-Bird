@@ -4,6 +4,7 @@ import lwjgl.playground.flappy.threading.ThreadedRenderer;
 import lwjgl.playground.flappy.input.InputListener;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.glfw.GLFWWindowSizeCallback;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
@@ -21,6 +22,7 @@ public class Main {
     private int width = 1280;
     private int height = 720;
     private int upsCount;
+    private boolean resized = false;
 
     private long window;
 
@@ -89,9 +91,18 @@ public class Main {
 
         GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwSetWindowPos(window, (vidMode.width() - width) / 2, (vidMode.height() - height) / 2);
-        glfwSwapInterval(0);
+        glfwSwapInterval(1);
         glfwSetKeyCallback(window, new InputListener());
         glfwShowWindow(window);
+
+        glfwSetWindowSizeCallback(window, new GLFWWindowSizeCallback() {
+            @Override
+            public void invoke(long window, int w, int h) {
+                resized = true;
+                width = w;
+                height = h;
+            }
+        });
     }
 
     private void update() {
@@ -99,6 +110,11 @@ public class Main {
 
         if (threadedRenderer.isReady()) {
             threadedRenderer.getLevel().update();
+
+            if (resized)
+            {
+                threadedRenderer.resize(width, height);
+            }
         }
     }
 
