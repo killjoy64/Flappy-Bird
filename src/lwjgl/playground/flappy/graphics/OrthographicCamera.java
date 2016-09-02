@@ -1,27 +1,37 @@
 package lwjgl.playground.flappy.graphics;
 
+import lwjgl.playground.flappy.math.Matrix4f;
+
 /**
  * Created by John Doneth on 9/2/2016.
  */
-public class Camera2D {
+public class OrthographicCamera {
 
     private int width;
     private int height;
     private float x;
     private float y;
 
-    public Camera2D()
-    {
+    private Matrix4f projection;
+    private Matrix4f translation;
+
+    public OrthographicCamera() {
 
     }
 
-    public void resize(int width, int height)
-    {
+    public Matrix4f getCombinedMatrix() {
+        return projection.multiply(translation);
+    }
+
+    public void update() {
 
     }
 
-    public void translate(float x, float y)
-    {
+    public void resize(int width, int height) {
+
+    }
+
+    public void translate(float x, float y) {
 
     }
 

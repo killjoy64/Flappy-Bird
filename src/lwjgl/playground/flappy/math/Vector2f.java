@@ -23,19 +23,19 @@ public class Vector2f {
         return this;
     }
 
-    public Vector2f sub(Vector2f right){
+    public Vector2f subtract(Vector2f right){
         this.x -= right.x;
         this.y -= right.y;
         return this;
     }
 
-    public Vector2f mul(Vector2f right){
+    public Vector2f multiply(Vector2f right){
         this.x *= right.x;
         this.y *= right.y;
         return this;
     }
 
-    public Vector2f div(Vector2f right){
+    public Vector2f divide(Vector2f right){
         this.x /= right.x;
         this.y /= right.y;
         return this;
@@ -47,20 +47,20 @@ public class Vector2f {
         return this;
     }
 
-    public Vector2f sub(float scalar){
+    public Vector2f subtract(float scalar){
         this.x -= scalar;
         this.y -= scalar;
         return this;
     }
 
-    public Vector2f mul(float scalar)
+    public Vector2f multiply(float scalar)
     {
         this.x *= scalar;
         this.y *= scalar;
         return this;
     }
 
-    public Vector2f div(float scalar)
+    public Vector2f divide(float scalar)
     {
         this.x /= scalar;
         this.y /= scalar;
