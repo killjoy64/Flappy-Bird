@@ -121,7 +121,9 @@ public class Music implements Runnable {
         if ( Files.isReadable(path) ) {
             try (SeekableByteChannel fc = Files.newByteChannel(path)) {
                 buffer = createByteBuffer((int)fc.size() + 1);
-                while ( fc.read(buffer) != -1 ) ;
+                while ( fc.read(buffer) != -1 ) {
+                    System.out.println(fc.read(buffer));
+                }
             }
         } else {
             try (
@@ -166,7 +168,7 @@ public class Music implements Runnable {
             ALCCapabilities deviceCaps = ALC.createCapabilities(device);
 
             if (deviceCaps.OpenALC10 || deviceCaps.OpenALC11) {
-                System.out.println("OpenAL 10 or OpenAL 11 support detected");
+                System.out.println("OpenAL support detected");
             } else {
                 System.err.println("Your device does not support OpenAL 10 or OpenAL 11");
                 alcCloseDevice(device);
@@ -178,8 +180,13 @@ public class Music implements Runnable {
 
             play();
 
-            while (true) {
-
+            boolean looping = true;
+            int state = 0;
+            while (looping) {
+                try {
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
             }
 
         } catch(Exception e) {

@@ -135,7 +135,12 @@ public class Main {
     }
 
     private void close() {
-        glfwTerminate();
+        try {
+            musicThread.join();
+            glfwTerminate();
+        } catch (InterruptedException e) {
+            System.exit(0);
+        }
     }
 
 }
