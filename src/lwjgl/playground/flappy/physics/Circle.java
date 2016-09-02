@@ -5,9 +5,7 @@ package lwjgl.playground.flappy.physics;
  */
 public class Circle {
 
-    float x;
-    float y;
-    float r;
+    private float x, y, r;
 
     public Circle()
     {
@@ -21,6 +19,13 @@ public class Circle {
         this.x = x;
         this.y = y;
         this.r = r;
+    }
+
+    public boolean contains(Point point)
+    {
+        // TODO
+
+        return false;
     }
 
 }

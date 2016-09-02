@@ -5,11 +5,8 @@ package lwjgl.playground.flappy.physics;
  */
 public class Line {
 
-    private float x1;
-    private float y1;
-
-    private float x2;
-    private float y2;
+    private float x1, y1; // first point
+    private float x2, y2; // second point
 
     public Line()
     {
