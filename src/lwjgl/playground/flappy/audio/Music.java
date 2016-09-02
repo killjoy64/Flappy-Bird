@@ -23,6 +23,7 @@ import static org.lwjgl.openal.ALC10.*;
 import static org.lwjgl.openal.ALC11.*;
 import static org.lwjgl.stb.STBVorbis.*;
 import static org.lwjgl.system.MemoryUtil.*;
+import org.lwjgl.openal.AL;
 
 /**
  * Created by John on 9/1/2016.
@@ -45,9 +46,9 @@ public class Music implements Runnable {
         Music.source = source;
         checkALError();
 
-        try ( STBVorbisInfo info = STBVorbisInfo.malloc() ) {
+        try (STBVorbisInfo info = STBVorbisInfo.malloc()) {
             ShortBuffer pcm = readVorbis("res/test.ogg", 32 * 1024, info);
-            
+
             //copy to buffer
             alBufferData(buffer, info.channels() == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16, pcm, info.sample_rate());
             checkALError();
@@ -67,7 +68,6 @@ public class Music implements Runnable {
 
         isPlaying = true;
     }
-
     public static void stop() {
         //stop source 0
         alSourceStop(source);
