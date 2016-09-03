@@ -12,10 +12,10 @@ public class Matrix4f {
 
     private static final int SIZE = 4*4;
 
-    public float[] elements = new float[SIZE];
+    public float[] elements = new float[16];
 
     public Matrix4f() {
-
+       
     }
 
     public static Matrix4f identity() {

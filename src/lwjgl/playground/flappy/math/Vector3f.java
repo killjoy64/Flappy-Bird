@@ -19,4 +19,74 @@ public class Vector3f {
         this.z = z;
     }
 
+    public Vector3f(Vector2f vec2, float z) {
+        this.x = vec2.x;
+        this.y = vec2.y;
+        this.z = z;
+    }
+
+    public Vector3f(Vector2f vec2) {
+        this.x = vec2.x;
+        this.y = vec2.y;
+        this.z = 0;
+    }
+
+    public Vector3f add(Vector3f right) {
+        this.x += right.x;
+        this.y += right.y;
+        this.z += right.z;
+        return this;
+    }
+
+    public Vector3f subtract(Vector3f right){
+        this.x -= right.x;
+        this.y -= right.y;
+        this.z -= right.z;
+        return this;
+    }
+
+    public Vector3f multiply(Vector3f right){
+        this.x *= right.x;
+        this.y *= right.y;
+        this.z *= right.z;
+        return this;
+    }
+
+    public Vector3f divide(Vector3f right){
+        this.x /= right.x;
+        this.y /= right.y;
+        this.z /= right.z;
+        return this;
+    }
+
+    public Vector3f add(float scalar) {
+        this.x += scalar;
+        this.y += scalar;
+        this.z += scalar;
+        return this;
+    }
+
+    public Vector3f subtract(float scalar){
+        this.x -= scalar;
+        this.y -= scalar;
+        this.z -= scalar;
+        return this;
+    }
+
+    public Vector3f multiply(float scalar)
+    {
+        this.x *= scalar;
+        this.y *= scalar;
+        this.z *= scalar;
+        return this;
+    }
+
+    public Vector3f divide(float scalar)
+    {
+        this.x /= scalar;
+        this.y /= scalar;
+        this.z /= scalar;
+        return this;
+    }
+
 }
