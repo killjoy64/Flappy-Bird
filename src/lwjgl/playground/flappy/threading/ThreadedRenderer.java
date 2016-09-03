@@ -49,7 +49,7 @@ public class ThreadedRenderer {
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
                 System.out.println("Render thread initialized - OpenGL " + glGetString(GL_VERSION));
-                Shader.loadAll(); // Must be called before enable...
+                Shader.loadAll(); // Must be called before enabling any shaders
 
                 Shader.BG.enable();
                 Matrix4f pr_matrix = Matrix4f.orthographic(-10.0f, 10.0f, -10.0f * 9.0f / 16.0f, 10.0f * 9.0f / 16.0f, -1.0f, 1.0f);

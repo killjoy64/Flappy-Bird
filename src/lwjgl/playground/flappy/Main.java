@@ -68,7 +68,7 @@ public class Main {
 
                 if (System.currentTimeMillis() - timer > 1000) {
                     timer += 1000;
-                    System.out.println(upsCount + " ups | " + threadedRenderer.getFPS() + " fps");
+                    System.out.println(upsCount + " UPS | " + threadedRenderer.getFPS() + " FPS");
                     upsCount = 0;
                 }
             }
@@ -92,12 +92,6 @@ public class Main {
         if (window == NULL) {
             throw new RuntimeException("Failed to create the GLFW window");
         }
-
-        // BEGIN AUDIO CODE
-
-        Thread soundThread = new Thread(new Music(), "Music Thread");
-        soundThread.start();
-        // END AUDIO CODE
 
         GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwSetWindowPos(window, (vidMode.width() - width) / 2, (vidMode.height() - height) / 2);
