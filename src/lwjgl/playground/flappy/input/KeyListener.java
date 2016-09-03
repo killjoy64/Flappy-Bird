@@ -7,7 +7,7 @@ import static org.lwjgl.glfw.GLFW.*;
 /**
  * Created by Kyle Flynn on 8/30/2016.
  */
-public class InputListener extends GLFWKeyCallback {
+public class KeyListener extends GLFWKeyCallback {
 
     public static boolean[] keys = new boolean[65536];
 

@@ -2,19 +2,13 @@ package lwjgl.playground.flappy;
 
 import lwjgl.playground.flappy.audio.Music;
 import lwjgl.playground.flappy.threading.ThreadedRenderer;
-import lwjgl.playground.flappy.input.InputListener;
-import lwjgl.playground.flappy.util.BufferUtils;
+import lwjgl.playground.flappy.input.KeyListener;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
-import org.lwjgl.openal.*;
-
-import java.nio.ByteBuffer;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.openal.AL10.*;
-import static org.lwjgl.openal.ALC10.*;
 import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.*;
@@ -108,7 +102,7 @@ public class Main {
         GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwSetWindowPos(window, (vidMode.width() - width) / 2, (vidMode.height() - height) / 2);
         glfwSwapInterval(1);
-        glfwSetKeyCallback(window, new InputListener());
+        glfwSetKeyCallback(window, new KeyListener());
         glfwShowWindow(window);
 
         glfwSetWindowSizeCallback(window, new GLFWWindowSizeCallback() {

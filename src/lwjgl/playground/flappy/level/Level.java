@@ -1,10 +1,9 @@
 package lwjgl.playground.flappy.level;
 
-import jdk.internal.util.xml.impl.Input;
 import lwjgl.playground.flappy.graphics.Shader;
 import lwjgl.playground.flappy.graphics.Texture;
 import lwjgl.playground.flappy.graphics.VertexArray;
-import lwjgl.playground.flappy.input.InputListener;
+import lwjgl.playground.flappy.input.KeyListener;
 import lwjgl.playground.flappy.math.Matrix4f;
 import lwjgl.playground.flappy.math.Vector3f;
 import org.lwjgl.glfw.GLFW;
@@ -102,11 +101,11 @@ public class Level {
             bird.die();
         }
 
-        if (isDead && InputListener.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
+        if (isDead && KeyListener.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
             gameover = true;
         }
 
-        if (!readyToStart && InputListener.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
+        if (!readyToStart && KeyListener.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
             readyToStart = true;
         }
 
