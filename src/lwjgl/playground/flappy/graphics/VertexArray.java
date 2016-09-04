@@ -1,5 +1,6 @@
 package lwjgl.playground.flappy.graphics;
 
+import lwjgl.playground.flappy.math.Vector3f;
 import lwjgl.playground.flappy.util.BufferUtils;
 
 import java.nio.ByteBuffer;
@@ -15,16 +16,28 @@ import static org.lwjgl.opengl.GL30.*;
  */
 public class VertexArray {
 
-    private int vao;
-    private int vbo;
-    private int tbo;
-    private int ibo;
+    private int vao; // vertex array object
+    private int vbo; // vertex
+    private int tbo; // tex
+    private int ibo; // index
+    private int cbo; // color
+    private int nbo; // normal
+
     private int count;
 
     public VertexArray(int count) {
         this.count = count;
 
         vao = glGenVertexArrays();
+    }
+
+    public VertexArray(int vao, int vbo, int tbo, int ibo, int cbo, int nbo) {
+        this.vao = vao;
+        this.vbo = vbo;
+        this.tbo = tbo;
+        this.ibo = ibo;
+        this.cbo = cbo;
+        this.nbo = nbo;
     }
 
     public VertexArray(FloatBuffer vertices, ByteBuffer indices, FloatBuffer textureCoordinates) {

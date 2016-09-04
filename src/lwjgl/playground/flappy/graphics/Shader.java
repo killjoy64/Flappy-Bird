@@ -22,6 +22,8 @@ public class Shader {
 
     public static final int VERTEX_ATTRIBUTE = 0;
     public static final int TEX_COORD = 1;
+    public static final int NORMAL = 2;
+    public static final int COLOR = 3;
 
     private final int id;
     private Map<String, Integer> locationCache = new HashMap<String, Integer>();
