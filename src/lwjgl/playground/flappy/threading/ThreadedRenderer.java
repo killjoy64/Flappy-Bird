@@ -84,6 +84,8 @@ public class ThreadedRenderer {
                 System.exit(0);
 
                 level.dispose();
+
+                Shader.disposeAll();
             }
 
         }, "Render Thread");
