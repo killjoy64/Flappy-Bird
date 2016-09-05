@@ -70,6 +70,7 @@ public class ThreadedRenderer {
                 level = new Level();
 
                 ready = true;
+
                 while (!glfwWindowShouldClose(window)) {
                     render();
 
@@ -80,6 +81,8 @@ public class ThreadedRenderer {
                         glViewport(0, 0, resizeEvent.getWidth(), resizeEvent.getHeight());
                     }
                 }
+
+                level.dispose();
             }
 
         }, "Render Thread");
@@ -98,6 +101,7 @@ public class ThreadedRenderer {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         if (level.gameover()) {
+            level.dispose();
             level = new Level();
         } else {
             level.render();

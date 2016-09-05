@@ -48,6 +48,11 @@ public class Bird {
         texture = new Texture("res/bird.png");
     }
 
+    public void dispose(){
+        texture.dispose();
+        mesh.dispose();
+    }
+
     private void fall() {
         delta = 0.15f;
     }

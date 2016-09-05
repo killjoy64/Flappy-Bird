@@ -66,4 +66,28 @@ public class VertexArray {
         draw();
     }
 
+    // Call this to release the native GPU resources
+    public void dispose() {
+        count = 0;
+
+        if (glIsBuffer(vbo)){
+            glDeleteBuffers(vbo);
+        }
+        if (glIsBuffer(tbo)){
+            glDeleteBuffers(tbo);
+        }
+        if (glIsBuffer(ibo)){
+            glDeleteBuffers(ibo);
+        }
+        if (glIsBuffer(cbo)){
+            glDeleteBuffers(cbo);
+        }
+        if (glIsBuffer(nbo)){
+            glDeleteBuffers(nbo);
+        }
+        if (glIsVertexArray(vao)){
+            glDeleteBuffers(vao);
+        }
+    }
+
 }

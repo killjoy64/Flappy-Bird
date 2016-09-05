@@ -47,6 +47,11 @@ public class Pipe {
         ml_matrix = Matrix4f.translate(position);
     }
 
+    public void dispose() {
+        texture.dispose();
+        mesh.dispose();
+    }
+
     public float getX() {
         return position.x;
     }

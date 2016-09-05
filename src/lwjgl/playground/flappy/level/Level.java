@@ -77,6 +77,17 @@ public class Level {
         createPipes();
     }
 
+    public void dispose() {
+        background.dispose();
+        bgTexture.dispose();
+        bird.dispose();
+        fade.dispose();
+
+        for (Pipe pipe : pipes) {
+            pipe.dispose();
+        }
+    }
+
     public void update() {
         if (!isDead && readyToStart) {
             xScroll--;
