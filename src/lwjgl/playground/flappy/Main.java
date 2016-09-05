@@ -1,11 +1,15 @@
 package lwjgl.playground.flappy;
 
 import lwjgl.playground.flappy.audio.Music;
+import lwjgl.playground.flappy.input.ActionManager;
+import lwjgl.playground.flappy.input.JoystickListener;
 import lwjgl.playground.flappy.threading.ThreadedRenderer;
 import lwjgl.playground.flappy.input.KeyListener;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
+
+import java.nio.ByteBuffer;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
@@ -30,6 +34,10 @@ public class Main {
     ThreadedRenderer threadedRenderer;
     Thread musicThread;
 
+    private KeyListener keyListener;
+    private JoystickListener joystickListener;
+    private ActionManager actionManager;
+
     public Main() {
         upsCount = 0;
     }
@@ -45,8 +53,8 @@ public class Main {
             init();
 
             threadedRenderer = new ThreadedRenderer(window);
-            musicThread = new Thread(new Music(), "Music Thread");
-            musicThread.start();
+//            musicThread = new Thread(new Music(), "Music Thread");
+//            musicThread.start();
 
             threadedRenderer.init();
 
@@ -95,14 +103,19 @@ public class Main {
 
         // BEGIN AUDIO CODE
 
-        Thread soundThread = new Thread(new Music(), "Music Thread");
-        soundThread.start();
+//        Thread soundThread = new Thread(new Music(), "Music Thread");
+//        soundThread.start();
         // END AUDIO CODE
+
+        keyListener = new KeyListener();
+        joystickListener = new JoystickListener();
+        actionManager = new ActionManager();
 
         GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwSetWindowPos(window, (vidMode.width() - width) / 2, (vidMode.height() - height) / 2);
         glfwSwapInterval(1);
-        glfwSetKeyCallback(window, new KeyListener());
+        glfwSetKeyCallback(window, keyListener);
+        glfwSetJoystickCallback(joystickListener);
         glfwShowWindow(window);
 
         glfwSetWindowSizeCallback(window, new GLFWWindowSizeCallback() {
@@ -118,6 +131,9 @@ public class Main {
     private void update() {
         glfwPollEvents();
 
+        joystickListener.update();
+        keyListener.update();
+
         if (threadedRenderer.isReady()) {
             threadedRenderer.getLevel().update();
 
@@ -126,13 +142,14 @@ public class Main {
                 threadedRenderer.resize(width, height);
             }
         }
+
     }
 
     private void close() {
         try {
-            musicThread.join();
+//            musicThread.join();
             glfwTerminate();
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             System.exit(0);
         }
     }

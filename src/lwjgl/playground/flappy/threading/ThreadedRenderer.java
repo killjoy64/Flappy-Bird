@@ -80,6 +80,7 @@ public class ThreadedRenderer {
                         glViewport(0, 0, resizeEvent.getWidth(), resizeEvent.getHeight());
                     }
                 }
+                System.exit(0);
             }
 
         }, "Render Thread");

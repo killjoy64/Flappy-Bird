@@ -101,11 +101,11 @@ public class Level {
             bird.die();
         }
 
-        if (isDead && KeyListener.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
+        if (isDead && bird.getJump().isPressed()) {
             gameover = true;
         }
 
-        if (!readyToStart && KeyListener.isKeyDown(GLFW.GLFW_KEY_SPACE)) {
+        if (!readyToStart && bird.getJump().isPressed()) {
             readyToStart = true;
         }
 

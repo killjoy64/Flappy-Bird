@@ -3,6 +3,9 @@ package lwjgl.playground.flappy.level;
 import lwjgl.playground.flappy.graphics.Shader;
 import lwjgl.playground.flappy.graphics.Texture;
 import lwjgl.playground.flappy.graphics.VertexArray;
+import lwjgl.playground.flappy.input.Action;
+import lwjgl.playground.flappy.input.ActionType;
+import lwjgl.playground.flappy.input.GamePad;
 import lwjgl.playground.flappy.input.KeyListener;
 import lwjgl.playground.flappy.math.Matrix4f;
 import lwjgl.playground.flappy.math.Vector3f;
@@ -22,6 +25,8 @@ public class Bird {
     private float delta;
 
     private boolean isDead;
+
+    private Action jump;
 
     public Bird() {
         position = new Vector3f();
@@ -49,6 +54,10 @@ public class Bird {
 
         mesh = new VertexArray(vertices, indices, tcs);
         texture = new Texture("res/bird.png");
+
+        jump = new Action(ActionType.KEY, GLFW.GLFW_KEY_SPACE);
+        jump.addAlias(GamePad.A_BUTTON);
+
     }
 
     private void fall() {
@@ -57,7 +66,8 @@ public class Bird {
 
     public void update() {
         position.y -= delta;
-        if (KeyListener.isKeyDown(GLFW.GLFW_KEY_SPACE) && !isDead) {
+
+        if (jump.isPressed()) {
             delta = -0.15f;
         } else {
             delta += 0.01f;
@@ -89,6 +99,10 @@ public class Bird {
 
     public float getSize() {
         return SIZE;
+    }
+
+    public Action getJump() {
+        return jump;
     }
 
 }
