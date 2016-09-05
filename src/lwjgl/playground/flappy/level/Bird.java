@@ -30,6 +30,7 @@ public class Bird {
         isDead = false;
 
         VertexArrayBuilder vertexArrayBuilder = new VertexArrayBuilder();
+
         vertexArrayBuilder.addVertex( -SIZE / 2.0f, -SIZE / 2.0f, 0.2f);
         vertexArrayBuilder.addVertex( -SIZE / 2.0f,  SIZE / 2.0f, 0.2f);
         vertexArrayBuilder.addVertex(  SIZE / 2.0f,  SIZE / 2.0f, 0.2f);

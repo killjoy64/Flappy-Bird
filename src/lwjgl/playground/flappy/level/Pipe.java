@@ -2,6 +2,7 @@ package lwjgl.playground.flappy.level;
 
 import lwjgl.playground.flappy.graphics.Texture;
 import lwjgl.playground.flappy.graphics.VertexArray;
+import lwjgl.playground.flappy.graphics.VertexArrayBuilder;
 import lwjgl.playground.flappy.math.Matrix4f;
 import lwjgl.playground.flappy.math.Vector3f;
 
@@ -19,26 +20,23 @@ public class Pipe {
     private Matrix4f ml_matrix;
 
     public static void create() {
-        float[] vertices = new float[] {
-                0.0f, 0.0f, 0.1f,
-                0.0f, height, 0.1f,
-                width, height, 0.1f,
-                width, 0.0f, 0.1f
-        };
 
-        byte[] indices = new byte[] {
-                0, 1, 2,
-                2, 3, 0
-        };
+        VertexArrayBuilder vertexArrayBuilder = new VertexArrayBuilder();
 
-        float[] tcs = new float[] {
-                0, 1,
-                0, 0,
-                1, 0,
-                1, 1
-        };
+        vertexArrayBuilder.addVertex( 0.0f, 0.0f, 0.1f);
+        vertexArrayBuilder.addVertex( 0.0f, height, 0.1f);
+        vertexArrayBuilder.addVertex( width, height, 0.1f);
+        vertexArrayBuilder.addVertex( width, 0.0f, 0.1f);
 
-        mesh = new VertexArray(vertices, indices, tcs);
+        vertexArrayBuilder.addIndex(0, 1, 2);
+        vertexArrayBuilder.addIndex(2, 3, 0);
+
+        vertexArrayBuilder.addTexCoord(0, 1);
+        vertexArrayBuilder.addTexCoord(0, 0);
+        vertexArrayBuilder.addTexCoord(1, 0);
+        vertexArrayBuilder.addTexCoord(1, 1);
+
+        mesh = vertexArrayBuilder.build();
         texture = new Texture("res/pipe.png");
     }
 

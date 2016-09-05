@@ -164,8 +164,7 @@ public class VertexArrayBuilder {
         addColor(color.x, color.y, color.z);
     }
 
-    public VertexArray build()
-    {
+    public VertexArray build() {
         boolean useVertexBuffer    = (vertices.size()  != 0);
         boolean useTexCoordBuffer  = (texCoords.size() != 0);
         boolean useNormalBuffer    = (normals.size()   != 0);
@@ -186,8 +185,7 @@ public class VertexArrayBuilder {
 
         glBindVertexArray(vao);
 
-        if (useVertexBuffer)
-        {
+        if (useVertexBuffer) {
             float[] vertex_buffer_data = new float[vertices.size()];
             for (int i = 0; i < vertices.size(); i++)
             {
@@ -201,8 +199,7 @@ public class VertexArrayBuilder {
             glEnableVertexAttribArray(Shader.VERTEX_ATTRIBUTE);
         }
 
-        if (useTexCoordBuffer)
-        {
+        if (useTexCoordBuffer) {
             float[] texcoord_buffer_data = new float[texCoords.size()];
             for (int i = 0; i < texCoords.size(); i++)
             {
@@ -216,8 +213,7 @@ public class VertexArrayBuilder {
             glEnableVertexAttribArray(Shader.TEX_COORD);
         }
 
-        if (useNormalBuffer)
-        {
+        if (useNormalBuffer) {
             float[] normal_buffer_data = new float[normals.size()];
             for (int i = 0; i < normals.size(); i++)
             {
@@ -231,8 +227,7 @@ public class VertexArrayBuilder {
             glEnableVertexAttribArray(Shader.NORMAL);
         }
 
-        if (useColorBuffer)
-        {
+        if (useColorBuffer) {
             float[] color_buffer_data = new float[colors.size()];
             for (int i = 0; i < colors.size(); i++)
             {
@@ -246,8 +241,7 @@ public class VertexArrayBuilder {
             glEnableVertexAttribArray(Shader.COLOR);
         }
 
-        if (useIndexBuffer)
-        {
+        if (useIndexBuffer) {
             byte[] index_buffer_data = new byte[indices.size()];
             for (int i = 0; i < indices.size(); i++)
             {
