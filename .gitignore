@@ -1,3 +1,4 @@
 *.class
 .idea/libraries/LWJGL_3.xml
 .idea/workspace.xml
+*.class
