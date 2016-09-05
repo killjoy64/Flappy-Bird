@@ -5,18 +5,31 @@ package lwjgl.playground.flappy.physics;
  */
 public class Circle {
 
-    private float x, y, r;
+    public float x, y, radius;
 
     public Circle() {
         this.x = 0;
         this.y = 0;
-        this.r = 0;
+        this.radius = 0;
     }
 
     public Circle(float x, float y, float r) {
         this.x = x;
         this.y = y;
-        this.r = r;
+        this.radius = r;
+    }
+
+    public boolean intersects(Circle other)
+    {
+        double dx = this.x - other.x;
+        double dy = this.y - other.y;
+        double distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < this.radius + other.radius) {
+            return true;
+        }
+
+        return false;
     }
 
     public boolean contains(Point point) {
