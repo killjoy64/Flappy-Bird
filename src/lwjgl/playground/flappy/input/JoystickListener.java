@@ -23,19 +23,21 @@ public class JoystickListener extends GLFWJoystickCallback {
     }
 
     public void update() {
-        ByteBuffer buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1);
+        if (isJoystickConnected(0) || isJoystickConnected(1)) {
+            ByteBuffer buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1);
 
-        int buttonID = 1;
-        while (buttons.hasRemaining()) {
-            int state = buttons.get();
-            if (state == GLFW_PRESS || state == GLFW_RELEASE) {
-                for (Action action : ActionManager.getActions()) {
-                    if (action.getAliasCodes().contains(buttonID)) {
-                        action.setPressed(state == GLFW_PRESS ? true : false); // Nice little ternary to save 6 lines of code :)
+            int buttonID = 1;
+            while (buttons.hasRemaining()) {
+                int state = buttons.get();
+                if (state == GLFW_PRESS || state == GLFW_RELEASE) {
+                    for (Action action : ActionManager.getActions()) {
+                        if (action.getAliasCodes().contains(buttonID)) {
+                            action.setPressed(state == GLFW_PRESS ? true : false); // Nice little ternary to save 6 lines of code :)
+                        }
                     }
                 }
+                buttonID++;
             }
-            buttonID++;
         }
     }
 
