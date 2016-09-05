@@ -182,12 +182,12 @@ public class Music implements Runnable {
 
             boolean looping = true;
             int state = 0;
-            while (looping) {
+            /*while (looping) {
                 try {
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
 
         } catch(Exception e) {
             e.printStackTrace();
