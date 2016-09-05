@@ -48,19 +48,19 @@ public class VertexArrayBuilder {
         normalElementCount      = -1;
     }
 
-    public void setvertexElementCount(int count) {
+    public void setVertexElementCount(int count) {
         vertexElementCount = count;
     }
 
-    public void settexCoordElementCount(int count) {
+    public void setTexCoordElementCount(int count) {
         texCoordElementCount = count;
     }
 
-    public void setcolorElementCount(int count) {
+    public void setColorElementCount(int count) {
         colorElementCount = count;
     }
 
-    public void setnormalElementCount(int count) {
+    public void setNormalElementCount(int count) {
         normalElementCount = count;
     }
 
