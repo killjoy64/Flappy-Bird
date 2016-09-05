@@ -1,5 +1,6 @@
 package lwjgl.playground.flappy.graphics;
 
+import lwjgl.playground.flappy.level.Pipe;
 import lwjgl.playground.flappy.math.Matrix4f;
 import lwjgl.playground.flappy.math.Vector3f;
 import lwjgl.playground.flappy.util.ShaderUtils;
@@ -85,11 +86,27 @@ public class Shader {
         enabled = false;
     }
 
+    public void dispose(){
+        if (glIsProgram(id)){
+            glDeleteProgram(id);
+        }
+    }
+
     public static void loadAll() {
         BG = new Shader("shaders/bg.vert", "shaders/bg.frag");
         BIRD = new Shader("shaders/bird.vert", "shaders/bird.frag");
         PIPE = new Shader("shaders/pipe.vert", "shaders/pipe.frag");
         FADE = new Shader("shaders/fade.vert", "shaders/fade.frag");
+        PHYSICS = new Shader("shaders/physics.vert", "shaders/physics.frag");
+    }
+
+    public static void disposeAll()
+    {
+        BG.dispose();
+        BIRD.dispose();
+        PIPE.dispose();
+        FADE.dispose();
+        PHYSICS.dispose();
     }
 
 }
