@@ -20,6 +20,7 @@ import java.util.List;
 import static org.lwjgl.BufferUtils.createByteBuffer;
 import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.openal.ALC10.*;
+import static org.lwjgl.openal.ALC10.alcOpenDevice;
 import static org.lwjgl.openal.ALC11.*;
 import static org.lwjgl.stb.STBVorbis.*;
 import static org.lwjgl.system.MemoryUtil.*;
@@ -182,12 +183,14 @@ public class Music implements Runnable {
 
             boolean looping = true;
             int state = 0;
-            while (looping) {
+            /*while (looping) {
                 try {
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
+
+            alcCloseDevice(device);
 
         } catch(Exception e) {
             e.printStackTrace();

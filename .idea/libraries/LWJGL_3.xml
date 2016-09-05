@@ -1,17 +1,17 @@
 <component name="libraryTable">
   <library name="LWJGL 3">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../../Coding Libraries/LWJGL (3.0.0.90)/jar" />
+      <root url="file://$PROJECT_DIR$/libs/lwjgl/jar" />
     </CLASSES>
     <JAVADOC>
-      <root url="file://$PROJECT_DIR$/../../Coding Libraries/LWJGL (3.0.0.90)/doc/javadoc" />
+      <root url="jar://$PROJECT_DIR$/libs/lwjgl/doc/javadoc.zip!/" />
     </JAVADOC>
     <NATIVE>
-      <root url="file://$PROJECT_DIR$/../../Coding Libraries/LWJGL (3.0.0.90)/native" />
+      <root url="file://$PROJECT_DIR$/libs/lwjgl/native" />
     </NATIVE>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../../Coding Libraries/LWJGL (3.0.0.90)/src.zip!/" />
+      <root url="jar://$PROJECT_DIR$/libs/lwjgl/src.zip!/" />
     </SOURCES>
-    <jarDirectory url="file://$PROJECT_DIR$/../../Coding Libraries/LWJGL (3.0.0.90)/jar" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/libs/lwjgl/jar" recursive="false" />
   </library>
 </component>

@@ -1,5 +1,6 @@
 package lwjgl.playground.flappy.graphics;
 
+import lwjgl.playground.flappy.math.Vector3f;
 import lwjgl.playground.flappy.util.BufferUtils;
 
 import java.nio.ByteBuffer;
@@ -15,123 +16,39 @@ import static org.lwjgl.opengl.GL30.*;
  */
 public class VertexArray {
 
-    private int vao;
-    private int vbo;
-    private int tbo;
-    private int ibo;
-    private int count;
+    private int vao; // vertex array object
+    private int vbo; // vertex
+    private int tbo; // tex
+    private int ibo; // index
+    private int cbo; // color
+    private int nbo; // normal
+    private int count; // vertex count
 
     public VertexArray(int count) {
         this.count = count;
-
-        vao = glGenVertexArrays();
     }
 
-    public VertexArray(FloatBuffer vertices, ByteBuffer indices, FloatBuffer textureCoordinates) {
-        count = indices.array().length;
-
-        vao = glGenVertexArrays();
-        glBindVertexArray(vao);
-
-        vbo = glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
-        glVertexAttribPointer(Shader.VERTEX_ATTRIBUTE, 3, GL_FLOAT, false, 0, 0);
-        glEnableVertexAttribArray(Shader.VERTEX_ATTRIBUTE);
-
-        tbo = glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, tbo);
-        glBufferData(GL_ARRAY_BUFFER, textureCoordinates, GL_STATIC_DRAW);
-        glVertexAttribPointer(Shader.TEX_COORD, 2, GL_FLOAT, false, 0, 0);
-        glEnableVertexAttribArray(Shader.TEX_COORD);
-
-        ibo = glGenBuffers();
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
-    }
-
-    public VertexArray(FloatBuffer vertices, ByteBuffer indices) {
-        count = indices.array().length;
-
-        vao = glGenVertexArrays();
-        glBindVertexArray(vao);
-
-        vbo = glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
-        glVertexAttribPointer(Shader.VERTEX_ATTRIBUTE, 3, GL_FLOAT, false, 0, 0);
-        glEnableVertexAttribArray(Shader.VERTEX_ATTRIBUTE);
-
-        ibo = glGenBuffers();
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
-    }
-
-    public VertexArray(float[] vertices, byte[] indices) {
-        count = indices.length;
-
-        vao = glGenVertexArrays();
-        glBindVertexArray(vao);
-
-        vbo = glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, BufferUtils.createFloatBuffer(vertices), GL_STATIC_DRAW);
-        glVertexAttribPointer(Shader.VERTEX_ATTRIBUTE, 3, GL_FLOAT, false, 0, 0);
-        glEnableVertexAttribArray(Shader.VERTEX_ATTRIBUTE);
-
-        ibo = glGenBuffers();
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, BufferUtils.createByteBuffer(indices), GL_STATIC_DRAW);
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
-    }
-
-    public VertexArray(float[] vertices, byte[] indices, float[] textureCoordinates) {
-        count = indices.length;
-
-        vao = glGenVertexArrays();
-        glBindVertexArray(vao);
-
-        vbo = glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, BufferUtils.createFloatBuffer(vertices), GL_STATIC_DRAW);
-        glVertexAttribPointer(Shader.VERTEX_ATTRIBUTE, 3, GL_FLOAT, false, 0, 0);
-        glEnableVertexAttribArray(Shader.VERTEX_ATTRIBUTE);
-
-        tbo = glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, tbo);
-        glBufferData(GL_ARRAY_BUFFER, BufferUtils.createFloatBuffer(textureCoordinates), GL_STATIC_DRAW);
-        glVertexAttribPointer(Shader.TEX_COORD, 2, GL_FLOAT, false, 0, 0);
-        glEnableVertexAttribArray(Shader.TEX_COORD);
-
-        ibo = glGenBuffers();
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, BufferUtils.createByteBuffer(indices), GL_STATIC_DRAW);
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
+    public VertexArray(int vao, int vbo, int tbo, int ibo, int cbo, int nbo, int count) {
+        this.vao = vao;
+        this.vbo = vbo;
+        this.tbo = tbo;
+        this.ibo = ibo;
+        this.cbo = cbo;
+        this.nbo = nbo;
+        this.count = count;
     }
 
     public void bind() {
         glBindVertexArray(vao);
-        if (ibo > 0)
+        if (ibo > 0) {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+        }
     }
 
     public void unbind() {
-        if (ibo > 0)
+        if (ibo > 0) {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        }
 
         glBindVertexArray(0);
     }
@@ -147,6 +64,30 @@ public class VertexArray {
     public void render() {
         bind();
         draw();
+    }
+
+    // Call this to release the native GPU resources
+    public void dispose() {
+        count = 0;
+
+        if (glIsBuffer(vbo)){
+            glDeleteBuffers(vbo);
+        }
+        if (glIsBuffer(tbo)){
+            glDeleteBuffers(tbo);
+        }
+        if (glIsBuffer(ibo)){
+            glDeleteBuffers(ibo);
+        }
+        if (glIsBuffer(cbo)){
+            glDeleteBuffers(cbo);
+        }
+        if (glIsBuffer(nbo)){
+            glDeleteBuffers(nbo);
+        }
+        if (glIsVertexArray(vao)){
+            glDeleteBuffers(vao);
+        }
     }
 
 }

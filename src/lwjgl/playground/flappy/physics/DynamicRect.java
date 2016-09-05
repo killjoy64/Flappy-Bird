@@ -12,8 +12,7 @@ public class DynamicRect {
     float rotation;
     Point origin;
 
-    public DynamicRect()
-    {
+    public DynamicRect() {
         this.x = 0;
         this.y = 0;
         this.width = 0;
@@ -22,8 +21,7 @@ public class DynamicRect {
         this.origin = new Point();
     }
 
-    public DynamicRect(float x, float y, float width, float height, float degrees)
-    {
+    public DynamicRect(float x, float y, float width, float height, float degrees) {
         this.x = 0;
         this.y = 0;
         this.width = width;

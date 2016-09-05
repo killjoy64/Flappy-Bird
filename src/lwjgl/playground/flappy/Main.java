@@ -5,11 +5,20 @@ import lwjgl.playground.flappy.input.ActionManager;
 import lwjgl.playground.flappy.input.JoystickListener;
 import lwjgl.playground.flappy.threading.ThreadedRenderer;
 import lwjgl.playground.flappy.input.KeyListener;
+import lwjgl.playground.flappy.util.BufferUtils;
 import org.lwjgl.Version;
+import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
+import org.lwjgl.stb.STBImage;
 
 import java.nio.ByteBuffer;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+
+import static lwjgl.playground.flappy.audio.Music.ioResourceToByteBuffer;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
@@ -76,7 +85,7 @@ public class Main {
 
                 if (System.currentTimeMillis() - timer > 1000) {
                     timer += 1000;
-                    System.out.println(upsCount + " ups | " + threadedRenderer.getFPS() + " fps");
+                    System.out.println(upsCount + " UPS | " + threadedRenderer.getFPS() + " FPS");
                     upsCount = 0;
                 }
             }
@@ -113,6 +122,13 @@ public class Main {
 
         GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwSetWindowPos(window, (vidMode.width() - width) / 2, (vidMode.height() - height) / 2);
+
+        try {
+            setIcon("res/bird.png");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
         glfwSwapInterval(1);
         glfwSetKeyCallback(window, keyListener);
         glfwSetJoystickCallback(joystickListener);
@@ -154,4 +170,47 @@ public class Main {
         }
     }
 
+    public void setIcon(String path) throws Exception {
+        IntBuffer w = memAllocInt(1);
+        IntBuffer h = memAllocInt(1);
+        IntBuffer comp = memAllocInt(1);
+
+        // Icons
+        {
+            ByteBuffer icon16;
+            ByteBuffer icon32;
+            try {
+                icon16 = ioResourceToByteBuffer(path, 2048);
+                icon32 = ioResourceToByteBuffer(path, 4096);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            try (GLFWImage.Buffer icons = GLFWImage.malloc(2)) {
+                ByteBuffer pixels16 = STBImage.stbi_load_from_memory(icon16, w, h, comp, 4);
+                icons
+                        .position(0)
+                        .width(w.get(0))
+                        .height(h.get(0))
+                        .pixels(pixels16);
+
+                ByteBuffer pixels32 = STBImage.stbi_load_from_memory(icon32, w, h, comp, 4);
+                icons
+                        .position(1)
+                        .width(w.get(0))
+                        .height(h.get(0))
+                        .pixels(pixels32);
+
+                icons.position(0);
+                glfwSetWindowIcon(window, icons);
+
+                STBImage.stbi_image_free(pixels32);
+                STBImage.stbi_image_free(pixels16);
+            }
+        }
+
+        memFree(comp);
+        memFree(h);
+        memFree(w);
+    }
 }

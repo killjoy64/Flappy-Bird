@@ -73,16 +73,14 @@ public class Vector3f {
         return this;
     }
 
-    public Vector3f multiply(float scalar)
-    {
+    public Vector3f multiply(float scalar) {
         this.x *= scalar;
         this.y *= scalar;
         this.z *= scalar;
         return this;
     }
 
-    public Vector3f divide(float scalar)
-    {
+    public Vector3f divide(float scalar) {
         this.x /= scalar;
         this.y /= scalar;
         this.z /= scalar;

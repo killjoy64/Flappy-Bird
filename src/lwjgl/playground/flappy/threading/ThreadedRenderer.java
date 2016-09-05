@@ -49,7 +49,7 @@ public class ThreadedRenderer {
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
                 System.out.println("Render thread initialized - OpenGL " + glGetString(GL_VERSION));
-                Shader.loadAll(); // Must be called before enable...
+                Shader.loadAll(); // Must be called before enabling any shaders
 
                 Shader.BG.enable();
                 Matrix4f pr_matrix = Matrix4f.orthographic(-10.0f, 10.0f, -10.0f * 9.0f / 16.0f, 10.0f * 9.0f / 16.0f, -1.0f, 1.0f);
@@ -70,6 +70,7 @@ public class ThreadedRenderer {
                 level = new Level();
 
                 ready = true;
+
                 while (!glfwWindowShouldClose(window)) {
                     render();
 
@@ -81,6 +82,8 @@ public class ThreadedRenderer {
                     }
                 }
                 System.exit(0);
+
+                level.dispose();
             }
 
         }, "Render Thread");
@@ -99,6 +102,7 @@ public class ThreadedRenderer {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         if (level.gameover()) {
+            level.dispose();
             level = new Level();
         } else {
             level.render();

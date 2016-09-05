@@ -3,6 +3,7 @@ package lwjgl.playground.flappy.level;
 import lwjgl.playground.flappy.graphics.Shader;
 import lwjgl.playground.flappy.graphics.Texture;
 import lwjgl.playground.flappy.graphics.VertexArray;
+import lwjgl.playground.flappy.graphics.VertexArrayBuilder;
 import lwjgl.playground.flappy.input.KeyListener;
 import lwjgl.playground.flappy.math.Matrix4f;
 import lwjgl.playground.flappy.math.Vector3f;
@@ -44,24 +45,21 @@ public class Level {
     }
 
     public void createLevel() {
-        float[] vertices = new float[] {
-                -10.0f, -10.0f * 9.0f / 16.0f, 0.0f,
-                -10.0f,  10.0f * 9.0f / 16.0f, 0.0f,
-                0.0f,  10.0f * 9.0f / 16.0f, 0.0f,
-                0.0f, -10.0f * 9.0f / 16.0f, 0.0f
-        };
 
-        byte[] indices = new byte[] {
-                0, 1, 2,
-                2, 3, 0
-        };
+        VertexArrayBuilder vertexArrayBuilder = new VertexArrayBuilder();
 
-        float[] tcs = new float[] {
-                0, 1,
-                0, 0,
-                1, 0,
-                1, 1
-        };
+        vertexArrayBuilder.addVertex( -10.0f, -10.0f * 9.0f / 16.0f, 0.0f );
+        vertexArrayBuilder.addVertex( -10.0f,  10.0f * 9.0f / 16.0f, 0.0f );
+        vertexArrayBuilder.addVertex(  0.0f,   10.0f * 9.0f / 16.0f, 0.0f );
+        vertexArrayBuilder.addVertex(  0.0f,  -10.0f * 9.0f / 16.0f, 0.0f );
+
+        vertexArrayBuilder.addIndex(0, 1, 2);
+        vertexArrayBuilder.addIndex(2, 3, 0);
+
+        vertexArrayBuilder.addTexCoord(0, 1);
+        vertexArrayBuilder.addTexCoord(0, 0);
+        vertexArrayBuilder.addTexCoord(1, 0);
+        vertexArrayBuilder.addTexCoord(1, 1);
 
         offset = 10.0f;
         isDead = false;
@@ -69,7 +67,7 @@ public class Level {
         readyToStart = false;
 
         fade = new VertexArray(6);
-        background = new VertexArray(vertices, indices, tcs);
+        background = vertexArrayBuilder.build();
         bgTexture = new Texture("res/bg.jpeg");
 
         random = new Random();
@@ -77,6 +75,17 @@ public class Level {
         bird = new Bird();
 
         createPipes();
+    }
+
+    public void dispose() {
+        background.dispose();
+        bgTexture.dispose();
+        bird.dispose();
+        fade.dispose();
+
+        for (Pipe pipe : pipes) {
+            pipe.dispose();
+        }
     }
 
     public void update() {
@@ -116,7 +125,7 @@ public class Level {
     public void render() {
         bgTexture.bind();
         Shader.BG.enable();
-        Shader.BG.setUniform2f("bird", 0, bird.getY());
+        Shader.BG.setUniform1f("bird", bird.getY());
         background.bind();
         for (int i = bgMaps; i < bgMaps + 4; i++) {
             Shader.BG.setUniformMatrix4f("vw_matrix", Matrix4f.translate(new Vector3f(i * 10 + xScroll * 0.03f, 0.0f, 0.0f)));
