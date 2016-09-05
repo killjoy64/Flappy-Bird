@@ -3,6 +3,7 @@ package lwjgl.playground.flappy.level;
 import lwjgl.playground.flappy.graphics.Shader;
 import lwjgl.playground.flappy.graphics.Texture;
 import lwjgl.playground.flappy.graphics.VertexArray;
+import lwjgl.playground.flappy.graphics.VertexArrayBuilder;
 import lwjgl.playground.flappy.input.KeyListener;
 import lwjgl.playground.flappy.math.Matrix4f;
 import lwjgl.playground.flappy.math.Vector3f;
@@ -28,26 +29,21 @@ public class Bird {
         delta = 0.0f;
         isDead = false;
 
-        float[] vertices = new float[] {
-                -SIZE / 2.0f,   -SIZE / 2.0f, 0.2f,
-                -SIZE / 2.0f,    SIZE / 2.0f, 0.2f,
-                 SIZE / 2.0f,    SIZE / 2.0f, 0.2f,
-                 SIZE / 2.0f,   -SIZE / 2.0f, 0.2f,
-        };
+        VertexArrayBuilder vertexArrayBuilder = new VertexArrayBuilder();
+        vertexArrayBuilder.addVertex( -SIZE / 2.0f, -SIZE / 2.0f, 0.2f);
+        vertexArrayBuilder.addVertex( -SIZE / 2.0f,  SIZE / 2.0f, 0.2f);
+        vertexArrayBuilder.addVertex(  SIZE / 2.0f,  SIZE / 2.0f, 0.2f);
+        vertexArrayBuilder.addVertex(  SIZE / 2.0f, -SIZE / 2.0f, 0.2f);
 
-        byte[] indices = new byte[] {
-                0, 1, 2,
-                2, 3, 0
-        };
+        vertexArrayBuilder.addIndex(0, 1, 2);
+        vertexArrayBuilder.addIndex(2, 3, 0);
 
-        float[] tcs = new float[] {
-                0, 1,
-                0, 0,
-                1, 0,
-                1, 1
-        };
+        vertexArrayBuilder.addTexCoord(0, 1);
+        vertexArrayBuilder.addTexCoord(0, 0);
+        vertexArrayBuilder.addTexCoord(1, 0);
+        vertexArrayBuilder.addTexCoord(1, 1);
 
-        mesh = new VertexArray(vertices, indices, tcs);
+        mesh = vertexArrayBuilder.build();
         texture = new Texture("res/bird.png");
     }
 

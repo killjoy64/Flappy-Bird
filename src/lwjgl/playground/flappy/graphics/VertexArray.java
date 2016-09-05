@@ -31,13 +31,14 @@ public class VertexArray {
         vao = glGenVertexArrays();
     }
 
-    public VertexArray(int vao, int vbo, int tbo, int ibo, int cbo, int nbo) {
+    public VertexArray(int vao, int vbo, int tbo, int ibo, int cbo, int nbo, int count) {
         this.vao = vao;
         this.vbo = vbo;
         this.tbo = tbo;
         this.ibo = ibo;
         this.cbo = cbo;
         this.nbo = nbo;
+        this.count = count;
     }
 
     public VertexArray(FloatBuffer vertices, ByteBuffer indices, FloatBuffer textureCoordinates) {
