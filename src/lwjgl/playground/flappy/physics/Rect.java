@@ -13,8 +13,7 @@ public class Rect {
     float height;
     Point origin;
 
-    public Rect()
-    {
+    public Rect() {
         this.x = 0;
         this.y = 0;
         this.width = 0;
@@ -22,8 +21,7 @@ public class Rect {
         this.origin = new Point();
     }
 
-    public Rect(float x, float y, float width, float height)
-    {
+    public Rect(float x, float y, float width, float height) {
         this.x = 0;
         this.y = 0;
         this.width = width;
@@ -31,53 +29,43 @@ public class Rect {
         this.origin = new Point();
     }
 
-    public void setOrigin(float x, float y)
-    {
+    public void setOrigin(float x, float y) {
         this.origin = new Point(x, y);
     }
 
-    public void setOrigin(Point point)
-    {
+    public void setOrigin(Point point) {
         this.origin = point;
     }
 
-    public Point getOrigin()
-    {
+    public Point getOrigin() {
         return this.origin;
     }
 
-    public float getX()
-    {
+    public float getX() {
         return x;
     }
 
-    public void setX(float x)
-    {
+    public void setX(float x) {
         this.x = x;
     }
 
-    public float getY()
-    {
+    public float getY() {
         return y;
     }
 
-    public void setY(float y)
-    {
+    public void setY(float y) {
         this.y = y;
     }
 
-    public float getWidth()
-    {
+    public float getWidth() {
         return width;
     }
 
-    public float getHeight()
-    {
+    public float getHeight() {
         return height;
     }
 
-    public boolean contains(Point point)
-    {
+    public boolean contains(Point point) {
         if (point.getX() > this.x && point.getX() < this.x + this.width)
         {
             if (point.getY() > this.y && point.getY() < this.y + this.height)
@@ -89,8 +77,7 @@ public class Rect {
         return false;
     }
 
-    public boolean intersects(Rect rect)
-    {
+    public boolean intersects(Rect rect) {
         //
         // Origin -> ------------------ y+  ---
         //           |                |      |
