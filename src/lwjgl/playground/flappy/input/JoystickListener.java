@@ -3,6 +3,7 @@ package lwjgl.playground.flappy.input;
 import org.lwjgl.glfw.GLFWJoystickCallback;
 
 import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -23,8 +24,9 @@ public class JoystickListener extends GLFWJoystickCallback {
     }
 
     public void update() {
+
         if (isJoystickConnected(0) || isJoystickConnected(1)) {
-            ByteBuffer buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1);
+            ByteBuffer buttons = glfwGetJoystickButtons( (isJoystickConnected(0) || isJoystickConnected(1) ? 0 : 1) );
 
             int buttonID = 1;
             while (buttons.hasRemaining()) {
@@ -38,6 +40,16 @@ public class JoystickListener extends GLFWJoystickCallback {
                 }
                 buttonID++;
             }
+
+            FloatBuffer axes = glfwGetJoystickAxes( (isJoystickConnected(0) || isJoystickConnected(1) ? 0 : 1) );
+
+            int axesID = 0;
+            while (axes.hasRemaining()) {
+                float value = axes.get();
+                ActionManager.setAxes(axesID, value);
+                axesID++;
+            }
+
         }
     }
 

@@ -1,5 +1,7 @@
 package lwjgl.playground.flappy.input;
 
+import java.util.HashMap;
+
 /**
  * Created by Kyle Flynn on 9/5/2016.
  */
@@ -20,6 +22,15 @@ public class GamePad {
     public static int D_PAD_DOWN = 13;
     public static int D_PAD_LEFT = 14;
 
-    // TODO - Make axis declarations
+    public static int LEFT_VERT_AXES = 1;
+    public static int LEFT_HORIZ_AXES = 0;
+    public static int RIGHT_VERT_AXES = 3;
+    public static int RIGHT_HORIZ_AXES = 2;
+    public static int LEFT_TRIGGER = 4;
+    public static int RIGHT_TRIGGER = 5;
+
+    public static float getAxes(int id) {
+        return ActionManager.getAxes(id);
+    }
 
 }
