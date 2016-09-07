@@ -14,17 +14,22 @@ public class OrthographicCamera {
 
     private Matrix4f projection;
     private Matrix4f translation;
+    private Matrix4f combined;
 
     public OrthographicCamera() {
 
     }
 
     public Matrix4f getCombinedMatrix() {
-        return projection.multiply(translation);
+        return combined;
+    }
+
+    public void setToOrtho(float width, float height){
+
     }
 
     public void update() {
-
+        combined = projection.multiply(translation);
     }
 
     public void resize(int width, int height) {
