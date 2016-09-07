@@ -129,7 +129,6 @@ public class Main {
             throw new RuntimeException(e);
         }
 
-        glfwSwapInterval(1);
         glfwSetKeyCallback(window, keyListener);
         glfwSetJoystickCallback(joystickListener);
         glfwShowWindow(window);

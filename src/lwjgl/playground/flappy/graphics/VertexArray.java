@@ -23,12 +23,14 @@ public class VertexArray {
     private int cbo; // color
     private int nbo; // normal
     private int count; // vertex count
+    private int primType;
+    private boolean wireframe;
 
     public VertexArray(int count) {
         this.count = count;
     }
 
-    public VertexArray(int vao, int vbo, int tbo, int ibo, int cbo, int nbo, int count) {
+    public VertexArray(int vao, int vbo, int tbo, int ibo, int cbo, int nbo, int count, int primType) {
         this.vao = vao;
         this.vbo = vbo;
         this.tbo = tbo;
@@ -36,16 +38,27 @@ public class VertexArray {
         this.cbo = cbo;
         this.nbo = nbo;
         this.count = count;
+        this.primType = primType;
+        this.wireframe = false;
     }
 
     public void bind() {
+        if (wireframe){
+            glPolygonMode(GL_FRONT_FACE, GL_LINE);
+        }
+
         glBindVertexArray(vao);
+
         if (ibo > 0) {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
         }
     }
 
     public void unbind() {
+        if (wireframe){
+            glPolygonMode(GL_FRONT_FACE, GL_FILL);
+        }
+
         if (ibo > 0) {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         }
@@ -53,17 +66,22 @@ public class VertexArray {
         glBindVertexArray(0);
     }
 
-    public void draw() {
-        if (ibo > 0) {
-            glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_BYTE, 0);
+    public void setWireframe(boolean useWireframe) {
+        if (useWireframe){
+            wireframe = true;
         } else {
-            glDrawArrays(GL_TRIANGLES, 0, count);
+            wireframe = false;
         }
     }
 
-    public void render() {
+    public void draw() {
         bind();
-        draw();
+        if (ibo > 0) {
+            glDrawElements(primType, count, GL_UNSIGNED_BYTE, 0);
+        } else {
+            glDrawArrays(primType, 0, count);
+        }
+        unbind();
     }
 
     // Call this to release the native GPU resources

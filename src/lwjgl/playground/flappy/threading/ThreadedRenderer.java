@@ -4,10 +4,12 @@ import lwjgl.playground.flappy.graphics.Shader;
 import lwjgl.playground.flappy.level.Level;
 import lwjgl.playground.flappy.math.Matrix4f;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
+import org.lwjgl.opengl.GLXCapabilities;
 import org.lwjgl.opengles.GLES;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL.createCapabilities;
+import static org.lwjgl.opengl.GL.getCapabilitiesGLX;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
@@ -42,6 +44,7 @@ public class ThreadedRenderer {
             @Override
             public void run() {
                 glfwMakeContextCurrent(window);
+                glfwSwapInterval(0);
                 createCapabilities();
                 glEnable(GL_DEPTH_TEST);
                 glActiveTexture(GL_TEXTURE1);
@@ -51,8 +54,9 @@ public class ThreadedRenderer {
                 System.out.println("Render thread initialized - OpenGL " + glGetString(GL_VERSION));
                 Shader.loadAll(); // Must be called before enabling any shaders
 
-                Shader.BG.enable();
                 Matrix4f pr_matrix = Matrix4f.orthographic(-10.0f, 10.0f, -10.0f * 9.0f / 16.0f, 10.0f * 9.0f / 16.0f, -1.0f, 1.0f);
+
+                Shader.BG.enable();
                 Shader.BG.setUniformMatrix4f("pr_matrix", pr_matrix);
                 Shader.BG.setUniformi("tex", 1);
                 Shader.BG.disable();

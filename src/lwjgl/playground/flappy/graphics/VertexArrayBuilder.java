@@ -6,7 +6,7 @@ import lwjgl.playground.flappy.util.BufferUtils;
 
 import java.util.Vector;
 
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
@@ -18,6 +18,11 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 /**
  * Created by John Doneth on 9/3/2016.
  */
+
+
+
+
+
 public class VertexArrayBuilder {
 
     private Vector<Float>   vertices;
@@ -165,6 +170,36 @@ public class VertexArrayBuilder {
     }
 
     public VertexArray build() {
+        return build(PrimitiveType.Triangles, BufferType.Static);
+    }
+
+    public VertexArray build(PrimitiveType primitiveType) {
+        return build(primitiveType, BufferType.Static);
+    }
+
+    public VertexArray build(PrimitiveType primitiveType, BufferType bufferType) {
+
+        int glPrimitiveType = 0;
+
+        if (primitiveType == PrimitiveType.Points){
+            glPrimitiveType = GL_POINTS;
+        } else if (primitiveType == PrimitiveType.Lines){
+            glPrimitiveType = GL_LINES;
+        } else if (primitiveType == PrimitiveType.Triangles){
+            glPrimitiveType = GL_TRIANGLES;
+        }
+
+        int glBufferType = 0;
+
+        if (bufferType == BufferType.Static){
+            glBufferType = GL_STATIC_DRAW;
+        } else if (bufferType == BufferType.Dynamic){
+            glBufferType = GL_DYNAMIC_DRAW;
+        } else if (bufferType == BufferType.Stream){
+            glBufferType = GL_STREAM_DRAW;
+        }
+
+
         boolean useVertexBuffer    = (vertices.size()  != 0);
         boolean useTexCoordBuffer  = (texCoords.size() != 0);
         boolean useNormalBuffer    = (normals.size()   != 0);
@@ -194,7 +229,7 @@ public class VertexArrayBuilder {
 
             vbo = glGenBuffers();
             glBindBuffer(GL_ARRAY_BUFFER, vbo);
-            glBufferData(GL_ARRAY_BUFFER, BufferUtils.createFloatBuffer(vertex_buffer_data), GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, BufferUtils.createFloatBuffer(vertex_buffer_data), glBufferType);
             glVertexAttribPointer(Shader.VERTEX_ATTRIBUTE, vertexElementCount, GL_FLOAT, false, 0, 0);
             glEnableVertexAttribArray(Shader.VERTEX_ATTRIBUTE);
         }
@@ -208,7 +243,7 @@ public class VertexArrayBuilder {
 
             tbo = glGenBuffers();
             glBindBuffer(GL_ARRAY_BUFFER, tbo);
-            glBufferData(GL_ARRAY_BUFFER, BufferUtils.createFloatBuffer(texcoord_buffer_data), GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, BufferUtils.createFloatBuffer(texcoord_buffer_data), glBufferType);
             glVertexAttribPointer(Shader.TEX_COORD, texCoordElementCount, GL_FLOAT, false, 0, 0);
             glEnableVertexAttribArray(Shader.TEX_COORD);
         }
@@ -222,7 +257,7 @@ public class VertexArrayBuilder {
 
             nbo = glGenBuffers();
             glBindBuffer(GL_ARRAY_BUFFER, nbo);
-            glBufferData(GL_ARRAY_BUFFER, BufferUtils.createFloatBuffer(normal_buffer_data), GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, BufferUtils.createFloatBuffer(normal_buffer_data), glBufferType);
             glVertexAttribPointer(Shader.NORMAL, normalElementCount, GL_FLOAT, false, 0, 0);
             glEnableVertexAttribArray(Shader.NORMAL);
         }
@@ -236,7 +271,7 @@ public class VertexArrayBuilder {
 
             cbo = glGenBuffers();
             glBindBuffer(GL_ARRAY_BUFFER, cbo);
-            glBufferData(GL_ARRAY_BUFFER, BufferUtils.createFloatBuffer(color_buffer_data), GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, BufferUtils.createFloatBuffer(color_buffer_data), glBufferType);
             glVertexAttribPointer(Shader.COLOR, colorElementCount, GL_FLOAT, false, 0, 0);
             glEnableVertexAttribArray(Shader.COLOR);
         }
@@ -250,14 +285,14 @@ public class VertexArrayBuilder {
 
             ibo = glGenBuffers();
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, BufferUtils.createByteBuffer(index_buffer_data), GL_STATIC_DRAW);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, BufferUtils.createByteBuffer(index_buffer_data), glBufferType);
         }
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
 
-        return new VertexArray(vao, vbo, tbo, ibo, cbo, nbo, vertices.size());
+        return new VertexArray(vao, vbo, tbo, ibo, cbo, nbo, vertices.size(), glPrimitiveType);
 
     }
 

@@ -9,6 +9,7 @@ import lwjgl.playground.flappy.input.GamePad;
 import lwjgl.playground.flappy.graphics.VertexArrayBuilder;
 import lwjgl.playground.flappy.input.KeyListener;
 import lwjgl.playground.flappy.math.Matrix4f;
+import lwjgl.playground.flappy.math.Vector2f;
 import lwjgl.playground.flappy.math.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
@@ -57,6 +58,11 @@ public class Bird {
 
     }
 
+    public void setPosition(float x, float y){
+        this.position.x = x;
+        this.position.y = y;
+    }
+
     public void dispose(){
         texture.dispose();
         mesh.dispose();
@@ -87,7 +93,7 @@ public class Bird {
         Shader.BIRD.enable();
         Shader.BIRD.setUniformMatrix4f("ml_matrix", Matrix4f.translate(position).multiply(Matrix4f.rotate(rotation)));
         texture.bind();
-        mesh.render();
+        mesh.draw();
         Shader.BIRD.disable();
     }
 
